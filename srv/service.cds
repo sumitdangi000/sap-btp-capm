@@ -8,6 +8,7 @@ service MyService{
     email  : String;
     isAdmin: Boolean;
   };
+  
   entity Employees as projection on workspace.Employees;
   entity Departments as projection on workspace.Departments;
   entity Rooms as projection on workspace.Rooms;
