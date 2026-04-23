@@ -1,0 +1,12 @@
+ID,name,type,capacity
+6f1c2a10-2c9f-4b7d-9d3e-1c8a9f3a1111,Meeting Room 1,Meeting,6
+9a3b7c21-8f11-4c2d-9e55-2a1d6f9c2222,Meeting Room 2,Meeting,6
+1d9f2c33-5b77-4a2e-8c88-3b4d7a9e3333,Meeting Room 3,Meeting,5
+4e8a1c44-6d88-4f3a-9d99-5c6e8b0f4444,Meeting Room 4,Meeting,5
+7b2c9d55-1a99-4e5b-8eaa-6d7f9c1a5555,Training Room,Training,24
+8c3d1e66-2baa-4f6c-9fbb-7e8a0d2b6666,Phone Booth 1,Booth,1
+9d4e2f77-3cbb-4a7d-8fcc-8f9b1e3c7777,Phone Booth 2,Booth,1
+0e5f3a88-4dcc-4b8e-9add-9a0c2f4d8888,Phone Booth 3,Booth,1
+1f6a4b99-5edd-4c9f-8bee-0b1d3a5e9999,Phone Booth 4,Booth,1
+2a7b5c00-6fee-4d0a-9cff-1c2e4b6f0000,Phone Booth 5,Booth,1
+3b8c6d11-7aff-4e1b-8d11-2d3f5c7a1111,Phone Booth 6,Booth,1

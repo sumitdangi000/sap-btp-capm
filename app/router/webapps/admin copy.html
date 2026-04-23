@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin – WorkSpace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <img src="logo-white.png" alt="" height="30">
+  </a>
+
+  <div class="nav-links">
+    <a href="index.html">New Booking</a>
+    <a href="bookings.html">My Bookings</a>
+    <a href="admin.html" class="active">Admin Panel</a>
+  </div>
+
+  <div class="nav-spacer"></div>
+
+  <!-- FIXED IDs -->
+  <div class="user-chip">
+    <div class="avatar" id="userAvatar">A</div>
+    <span id="userGreet">Admin</span>
+    <span class="role-tag admin">Admin</span>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="ph">
+    <h1>All Bookings</h1>
+    <p>Manage every reservation across all rooms</p>
+  </div>
+
+  <!-- STATS (MATCH JS) -->
+  <div class="stats">
+    <div class="stat"><div class="n" id="statTotal">—</div><div class="l">Total</div></div>
+    <div class="stat"><div class="n" id="statUpcoming">—</div><div class="l">Upcoming</div></div>
+    <div class="stat"><div class="n" id="statToday">—</div><div class="l">Today</div></div>
+    <div class="stat"><div class="n" id="statRooms">—</div><div class="l">Active Rooms</div></div>
+  </div>
+
+  <!-- FILTERS (MATCH JS) -->
+  <div class="filter-row">
+    <input type="text" id="searchFilter" placeholder="Search room, name…">
+
+    <select id="typeFilter">
+      <option value="">All Types</option>
+      <option>Meeting</option>
+      <option>Training</option>
+      <option>Booth</option>
+    </select>
+
+    <select id="statusFilter">
+      <option value="">All Status</option>
+      <option value="upcoming">Upcoming</option>
+      <option value="ongoing">Ongoing</option>
+      <option value="past">Past</option>
+    </select>
+  </div>
+
+  <!-- TABLE -->
+  <div class="tcard">
+    <div class="tscroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Room</th>
+            <th>Type</th>
+            <th>Booked By</th>
+            <th>Members</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="bookingsBody">
+          <tr>
+            <td colspan="8" style="text-align:center;color:var(--txt3);padding:40px">
+              Loading…
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- EDIT MODAL (MATCH JS IDs) -->
+<div class="overlay hidden" id="editModal">
+  <div class="modal-card">
+    <h3>Edit Booking</h3>
+
+    <input type="hidden" id="editId">
+
+    <label>Start Time</label>
+    <input type="datetime-local" id="editStart">
+
+    <label>End Time</label>
+    <input type="datetime-local" id="editEnd">
+
+    <div class="modal-actions">
+      <button class="mbtn cancel" id="editCancel">Cancel</button>
+      <button class="mbtn confirm" id="editSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL (MATCH JS IDs) -->
+<div class="overlay hidden" id="deleteModal">
+  <div class="modal-card">
+    <h3>Delete Booking?</h3>
+
+    <p class="modal-body">
+      This permanently removes the reservation. The creator will be notified.
+    </p>
+
+    <input type="hidden" id="deleteId">
+
+    <div class="modal-actions">
+      <button class="mbtn cancel" id="deleteCancel">Keep It</button>
+      <button class="mbtn del" id="deleteConfirm">Delete</button>
+    </div>
+  </div>
+</div>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "xsappname": "booking-${org}-${space}",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.admin",
+      "description": "Administrator access"
+    },
+    {
+      "name": "$XSAPPNAME.user",
+      "description": "Standard user access"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "admin",
+      "scope-references": [
+        "$XSAPPNAME.admin"
+      ]
+    },
+    {
+      "name": "User",
+      "scope-references": [
+        "$XSAPPNAME.user"
+      ]
+    }
+  ],
+  "attributes": []
+}

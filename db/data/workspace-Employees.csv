@@ -1,0 +1,16 @@
+ID,name,email,department_ID,isAdmin
+ADM001,TestAdmin,admin@055ch.onmicrosoft.com,D1,true
+LT0415,Francis Ajay D.S,francisajay.ds@laderatechnology.com,D1,true
+LT0416,Siva Durairaj,siva.durairaj@laderatechnology.com,D1,true
+LT0719,Ankit A Kulkarni,ankit.k@laderatechnology.com,D1,false
+LT0720,Aruneshwar Karthikeyan,aruneshwar.k@laderatechnology.com,D1,false
+LT0721,Rahul B,rahul.b@laderatechnology.com,D1,false
+LT0722,Ankit A Kulkarni,ankit.k@laderatechnology.com,D1,false
+LT0723,Gowtham B,gowtham.b@laderatechnology.com,D1,false
+LT0724,Gundlapalle Vamsi,gundlapalle.vamsi@laderatechnology.com,D1,false
+LT0727,Manoj V,manoj.v@laderatechnology.com,D1,false
+LT0730,Shrivathsa M K,shrivathsa.m@laderatechnology.com,D1,false
+LT0731,Sumit Dangi,sumit.d@laderatechnology.com,D1,false
+LT0755,Rapeti Gowri Priya,rapeti.gowripriya@laderatechnology.com,D1,true
+LT0758,Sikindar M,sikindar.m@laderatechnology.com,D1,true
+LT0800,Varun Patel H R,varunpatelhr@laderatechnology.com,D1,false

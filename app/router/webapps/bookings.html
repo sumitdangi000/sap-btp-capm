@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My Bookings – WorkSpace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+ <a class="logo" href="index.html">
+  <img src="logo-white.png" alt="" height="30">
+</a>
+  <div class="nav-links">
+    <a href="index.html"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New Booking</a>
+    <a href="bookings.html" class="active"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>My Bookings</a>
+    <a href="admin.html" id="adminLink" style="display:none"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Admin Panel</a>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="user-chip"><div class="avatar" id="av">?</div><span id="nm">Loading…</span><span class="role-tag user" id="role">User</span></div>
+</nav>
+
+<div class="page-wrap">
+  <div class="ph"><h1>My Bookings</h1><p>Your reservations and rooms you've been invited to</p></div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="sM">—</div><div class="l">My Bookings</div></div>
+    <div class="stat"><div class="n" id="sU">—</div><div class="l">Upcoming</div></div>
+    <div class="stat"><div class="n" id="sMem">—</div><div class="l">As Member</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tbtn active" data-tab="created">Created by Me</button>
+    <button class="tbtn" data-tab="member">I'm a Member</button>
+  </div>
+
+  <div class="filter-row">
+    <select id="fStatus" style="max-width:160px"><option value="">All Status</option><option value="upcoming">Upcoming</option><option value="ongoing">Ongoing</option><option value="past">Past</option></select>
+  </div>
+
+  <div class="tcard"><div class="tscroll">
+    <table><thead><tr><th>Room</th><th>Type</th><th>Date</th><th>Time</th><th>Members</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody id="tbody"><tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:40px">Loading…</td></tr></tbody>
+    </table>
+  </div></div>
+</div>
+
+<!-- Cancel -->
+<div class="overlay hidden" id="canM">
+  <div class="modal-card">
+    <h3>Cancel Booking?</h3>
+    <p class="modal-body">This cancels your reservation and notifies all members. Cannot be undone.</p>
+    <input type="hidden" id="cId">
+    <div class="modal-actions">
+      <button class="mbtn cancel" id="cDis">Keep It</button>
+      <button class="mbtn del"    id="cConf">Yes, Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const API = '/odata/v4/my';
+  const $ = id => document.getElementById(id);
+  let data=[], uid=null, tab='created';
+
+  const fT = iso => new Date(iso).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:true});
+  const fD = iso => new Date(iso).toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
+  const st = (s,e) => { const n=Date.now(); return n<new Date(s)?'upcoming':n>new Date(e)?'past':'ongoing'; };
+
+  const load = async () => {
+    try {
+      const [rB,rMe]=await Promise.all([fetch(`${API}/Bookings?$expand=room,members($expand=employee)`),fetch(`${API}/me`)]);
+      data=(await rB.json()).value||[];
+      if(rMe.ok){
+        const u=await rMe.json();
+        uid=u.name; // bookedBy is the employee's display name
+        $('av').textContent=(u.name||'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()||'?';
+        $('nm').textContent=`Hi, ${(u.name||'').split(' ')[0]}`;
+        if(u.isAdmin){$('role').textContent='Admin';$('role').className='role-tag admin';$('adminLink').style.display='';}
+      }
+      stats();render();
+    }catch{$('tbody').innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--red);padding:32px">Failed to load</td></tr>`;}
+  };
+
+  const stats = () => {
+    const now=new Date();
+    const mine=data.filter(b=>b.bookedBy===uid);
+    const mem =data.filter(b=>b.bookedBy!==uid&&(b.members||[]).some(m=>m.employee?.name===uid||m.employee_ID===uid));
+    $('sM').textContent=mine.length;
+    $('sU').textContent=mine.filter(b=>new Date(b.startTime)>now).length;
+    $('sMem').textContent=mem.length;
+  };
+
+  const render = () => {
+    const fs=$('fStatus').value;
+    let list=tab==='created'
+      ?data.filter(b=>b.bookedBy===uid)
+      :data.filter(b=>b.bookedBy!==uid&&(b.members||[]).some(m=>m.employee?.name===uid||m.employee_ID===uid));
+    if(fs)list=list.filter(b=>st(b.startTime,b.endTime)===fs);
+    list.sort((a,b)=>new Date(b.startTime)-new Date(a.startTime));
+
+    if(!list.length){$('tbody').innerHTML=`<tr><td colspan="7"><div class="empty"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><p>No bookings here yet</p></div></td></tr>`;return;}
+
+    $('tbody').innerHTML=list.map(b=>{
+      const r=b.room||{},s2=st(b.startTime,b.endTime);
+      const mem=(b.members||[]).map(m=>m.employee?.name||m.employee_ID).join(', ')||'—';
+      const canCan=tab==='created'&&s2!=='past';
+      return `<tr>
+        <td><b>${r.name||b.room_ID}</b></td>
+        <td><span class="tag ${r.type||''}">${r.type||'—'}</span></td>
+        <td class="dim">${fD(b.startTime)}</td>
+        <td class="dim">${fT(b.startTime)} → ${fT(b.endTime)}</td>
+        <td class="dim" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${mem}">${mem}</td>
+        <td><span class="stag ${s2}">${s2.charAt(0).toUpperCase()+s2.slice(1)}</span></td>
+        <td>${canCan?`<button class="abtn cancel2" onclick="openC('${b.ID}')">✕ Cancel</button>`:`<span style="color:var(--txt3);font-size:.74rem">${s2==='past'?'Ended':'View only'}</span>`}</td>
+      </tr>`;
+    }).join('');
+  };
+
+  document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>{
+    tab=b.dataset.tab;
+    document.querySelectorAll('.tbtn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); render();
+  }));
+  $('fStatus').addEventListener('change',render);
+
+  window.openC = id => { $('cId').value=id; $('canM').classList.remove('hidden'); };
+  $('cDis').addEventListener('click',()=>$('canM').classList.add('hidden'));
+  $('cConf').addEventListener('click',async()=>{
+    const id=$('cId').value,btn=$('cConf');btn.textContent='Cancelling…';btn.disabled=true;
+    try{
+      const r=await fetch(`${API}/Bookings(${id})`,{method:'DELETE'});
+      if(r.ok||r.status===204){data=data.filter(b=>b.ID!==id);$('canM').classList.add('hidden');stats();render();}
+      else alert('Failed');
+    }catch{alert('Connection error');}finally{btn.textContent='Yes, Cancel';btn.disabled=false;}
+  });
+  $('canM').addEventListener('click',e=>{if(e.target===$('canM'))$('canM').classList.add('hidden');});
+
+  await load();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book a Space – WorkSpace</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav>
+
+    <a class="logo" href="index.html">
+      <img src="logo-white.png" alt="" height="30">
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+        New Booking
+      </a>
+      <a href="bookings.html">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <path d="M16 2v4M8 2v4M3 10h18" />
+        </svg>
+        My Bookings
+      </a>
+      <a href="admin.html" id="adminLink" style="display:none;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+        </svg>
+        Admin Panel
+      </a>
+    </div>
+    <div class="nav-spacer"></div>
+<a id="logout" href="https://7b1d9cd5trial.authentication.us10.hana.ondemand.com/login" onclick="logout(event)">
+  Logout
+</a>
+    <div class="user-chip">
+      <div class="avatar" id="navAvatar">?</div>
+      <span id="navName">Loading…</span>
+      <span class="role-tag" id="navRole">User</span>
+    </div>
+  </nav>
+  
+  <main>
+    <div class="page-header">
+      <h1>Reserve a Space</h1>
+      <p>Pick your time slot to <b>Book a Room</b></p>
+    </div>
+
+    <div class="form-card">
+      <form id="bookingForm">
+        <div id="s1" class="step">
+          <div class="step-title">
+            <span class="step-badge">1</span>
+            When do you need it?
+          </div>
+
+          <label>Date & Start Time</label>
+<input type="text" id="startTime" placeholder="Select date and time..." required autocomplete="off">
+
+          <label>Duration</label>
+          <div class="pill-row">
+            <button type="button" class="pill" data-mins="15">15 min</button>
+            <button type="button" class="pill sel" data-mins="30">30 min</button>
+            <button type="button" class="pill" data-mins="60">1 hr</button>
+            <button type="button" class="pill" data-mins="90">1.5 hrs</button>
+            <button type="button" class="pill" data-mins="120">2 hrs</button>
+            <button type="button" class="pill" id="customPill">Custom</button>
+          </div>
+          <input type="number" id="customMins" class="custom-mins hidden" placeholder="Enter minutes…" min="1">
+
+          <button type="button" class="btn-primary" id="btnCheckAvail">
+            Check Availability
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+
+        <div id="s2" class="step hidden">
+          <div class="step-title">
+            <span class="step-badge">2</span>
+            Pick a room
+            <button type="button" class="btn-back" id="btnBack1">← Change time</button>
+          </div>
+
+          <!-- time summary pill -->
+          <div class="slot-pill" id="slotPill"></div>
+
+          <!-- Room type tabs -->
+          <div class="type-tabs">
+            <button type="button" class="ttab active" data-type="Meeting">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              Meeting Rooms
+            </button>
+            <button type="button" class="ttab" data-type="Training">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8M12 17v4" />
+              </svg>
+              Training
+            </button>
+            <button type="button" class="ttab" data-type="Booth">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.14 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z" />
+              </svg>
+              Phone Booths
+            </button>
+          </div>
+
+          <!-- legend -->
+          <div class="map-legend">
+            <span class="leg-item"><span class="leg-dot avail"></span>Available</span>
+            <span class="leg-item"><span class="leg-dot taken"></span>Booked</span>
+            <span class="leg-item"><span class="leg-dot picked"></span>Selected</span>
+          </div>
+
+          <!-- SVG floor plan -->
+          <div class="floorplan-box" id="fpBox">
+            <div class="fp-spinner" id="fpSpinner">
+              <svg class="spin" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path d="M21 12a9 9 0 1 1-6.22-8.56" />
+              </svg>
+              Checking availability…
+            </div>
+            <svg id="fpSvg" class="hidden" viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+
+          <!-- selected room info banner -->
+          <!-- <div class="room-banner hidden" id="roomBanner">
+          <strong id="bnRoomName">—</strong>
+          <span id="bnRoomMeta"></span>
+        </div> -->
+        </div>
+
+        <div id="s3" class="step hidden">
+          <div class="step-title">
+            <span class="step-badge">3</span>
+            Add members
+            <span class="step-opt">— optional</span>
+          </div>
+          <div class="member-chips" id="memberChips"></div>
+          <div class="member-add">
+            <select id="memberSel">
+              <option value="">Add a colleague…</option>
+            </select>
+            <button type="button" class="btn-add" id="btnAddMember">+ Add</button>
+          </div>
+          <div class="cap-row">
+            <span class="cap-text">Capacity: <b id="capVal">—</b></span>
+            <div class="cap-track">
+              <div class="cap-fill" id="capFill"></div>
+            </div>
+            <span class="cap-text" id="capCount">0 / 0</span>
+          </div>
+        </div>
+
+        <div id="sSubmit" class="step hidden">
+          <button type="submit" id="submitBtn">Confirm Booking</button>
+        </div>
+
+      </form>
+      <div id="msgBox"></div>
+    </div>
+  </main>
+
+  <!-- Confirm Modal -->
+  <div class="overlay hidden" id="modal">
+    <div class="modal-card">
+      <h3>Confirm Booking</h3>
+      <div id="modalBody" class="modal-body"></div>
+      <div class="modal-actions">
+        <button class="mbtn cancel" id="modalCancel">Go Back</button>
+        <button class="mbtn confirm" id="modalConfirm">Book Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
