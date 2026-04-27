@@ -549,6 +549,6 @@ function logout(event) {
   .finally(() => {
     localStorage.clear();
     sessionStorage.clear();
-    window.location.href = 'https://7b1d9cd5trial.authentication.us10.hana.ondemand.com/login';
+    window.location.href = './login.html';
   });
 }

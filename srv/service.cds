@@ -1,5 +1,6 @@
 using workspace from '../db/schema';
 
+
 @requires:'authenticated-user'
 service MyService{
   function me() returns {
